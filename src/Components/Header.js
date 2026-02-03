@@ -13,66 +13,59 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#2d3748] shadow-sm">
-      <div className="px-12 sm:px-14 lg:px-16">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo and Company Name - Moved further from left edge */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">MK</span>
+    <header className="bg-[#2d3748] shadow-sm sticky top-0 z-50">
+      <div className="px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="flex justify-between items-center h-16 md:h-20">
+          {/* Logo and Company Name */}
+          <Link to="/" className="flex items-center space-x-2 md:space-x-3" onClick={closeMenu}>
+            <div className="w-10 h-10 md:w-12 md:h-14 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-lg md:text-xl">MK</span>
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">
-                Mkunyadze Holdings
+            <div className="min-w-0">
+              <h1 className="text-lg md:text-xl font-bold text-white truncate">
+                MK Holdings
               </h1>
-              <p className="text-sm text-gray-300 hidden sm:block">
+              <p className="text-xs md:text-sm text-gray-300 hidden sm:block">
                 Excellence in Business Solutions
               </p>
             </div>
           </Link>
 
-          {/* Desktop Navigation - Moved further from right edge */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex">
-            <div className="flex space-x-12">
-              <Link
-                to="/"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold"
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold"
-              >
-                About
-              </Link>
-              <Link
-                to="/services"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold"
-              >
-                Services
-              </Link>
-              <Link
-                to="/contact"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold"
-              >
-                Contact
-              </Link>
+            <div className="flex space-x-6 lg:space-x-8 xl:space-x-12">
+              {[
+                { path: '/', label: 'Home' },
+                { path: '/about', label: 'About' },
+                { path: '/services', label: 'Services' },
+                { path: '/contact', label: 'Contact' }
+              ].map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="text-white hover:text-gray-200 transition-colors duration-200 font-medium text-base lg:text-lg px-2 py-1 relative group"
+                >
+                  {item.label}
+                  {/* Hover underline effect */}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
+                </Link>
+              ))}
             </div>
           </nav>
 
-          {/* Mobile Menu Button - Moved further from right edge */}
+          {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-3 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="md:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             <svg
-              className="h-8 w-8"
+              className="h-7 w-7"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="3"
+              strokeWidth="2.5"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
@@ -85,41 +78,28 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden py-6 border-t border-gray-700">
-            <div className="flex flex-col space-y-5">
-              <Link
-                to="/"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold py-4"
-                onClick={closeMenu}
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold py-4"
-                onClick={closeMenu}
-              >
-                About
-              </Link>
-              <Link
-                to="/services"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold py-4"
-                onClick={closeMenu}
-              >
-                Services
-              </Link>
-              <Link
-                to="/contact"
-                className="text-white hover:text-gray-200 transition-colors duration-200 font-bold py-4"
-                onClick={closeMenu}
-              >
-                Contact
-              </Link>
+        {/* Mobile Navigation - Improved for touch */}
+        <div className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+          <nav className="py-3 border-t border-gray-700">
+            <div className="flex flex-col space-y-1">
+              {[
+                { path: '/', label: 'Home' },
+                { path: '/about', label: 'About' },
+                { path: '/services', label: 'Services' },
+                { path: '/contact', label: 'Contact' }
+              ].map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="text-white hover:text-gray-200 hover:bg-gray-700 transition-colors duration-200 font-medium py-3 px-4 rounded-lg active:bg-gray-600"
+                  onClick={closeMenu}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
           </nav>
-        )}
+        </div>
       </div>
     </header>
   );
